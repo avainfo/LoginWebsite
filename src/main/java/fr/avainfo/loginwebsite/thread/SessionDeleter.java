@@ -20,8 +20,8 @@ public class SessionDeleter implements Runnable {
             // - userpassword : password
             // - connected : true
             //////////////////////////////////
-            Thread.sleep(15000*60);
-            session.setAttribute(sessionToChange, false);
+            Thread.sleep(5000);
+            System.out.println("test");
             ////////////SESSION///////////////
             // - username : test
             // - userpassword : password

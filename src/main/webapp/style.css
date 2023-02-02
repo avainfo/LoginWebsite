@@ -1,0 +1,28 @@
+.center {
+    position: absolute;
+    top: 25vh;
+    left: 0;
+    width: 100vw;
+    height: 25vh;
+    text-align: center;
+}
+
+h1 {
+    position: relative;
+    margin-top: 15vh;
+    text-align: center;
+}
+
+.underbox {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 40vw;
+    height: 20vh;
+    margin-left: 30vw;
+    margin-top: 50vh;
+}
+
+button {
+
+}

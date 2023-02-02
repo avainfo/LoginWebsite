@@ -4,7 +4,9 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Objects;
 
+import fr.avainfo.loginwebsite.bean.ClasseDeCours;
 import fr.avainfo.loginwebsite.thread.SessionDeleter;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -23,18 +25,25 @@ public class HelloServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        usersname = req.getParameter("username");
-        req.getSession().setAttribute("username", usersname);
-        userspassword = req.getParameter("userpassword");
-        req.getSession().setAttribute("userpassword", userspassword);
-        System.out.println(req.getParameter("check"));
+//        usersname = req.getParameter("username");
+//        req.getSession().setAttribute("username", usersname);
+//        userspassword = req.getParameter("userpassword");
+//        req.getSession().setAttribute("userpassword", userspassword);
+//        System.out.println(req.getParameter("check"));
 
+//
+//        if ((boolean) req.getSession().getAttribute("connected")) {
+//            req.getRequestDispatcher("/Profile.jsp").forward(req, resp);
+//        } else {
+//            req.getRequestDispatcher("/Login.jsp").forward(req, resp);
+//        }
 
-        if ((boolean) req.getSession().getAttribute("connected")) {
-            req.getRequestDispatcher("/Profile.jsp").forward(req, resp);
-        } else {
-            req.getRequestDispatcher("/Login.jsp").forward(req, resp);
+        PrintWriter writter = resp.getWriter();
+        for (Cookie cookie : req.getCookies()) {
+            writter.println(cookie.getName() + " : " + cookie.getMaxAge());
         }
+
+        req.getSession().setAttribute("classeDeCours", new ClasseDeCours());
     }
 
     @Override
@@ -43,6 +52,8 @@ public class HelloServlet extends HttpServlet {
         userspassword = req.getParameter("userpassword");
         req.getSession().setAttribute("username", usersname);
         req.getSession().setAttribute("userpassword", userspassword);
+        Thread thread = new Thread(new SessionDeleter(req.getSession(), "connected"));
+        thread.start();
 
         ////////////SESSION///////////////
         // - username : test
@@ -61,8 +72,7 @@ public class HelloServlet extends HttpServlet {
                 req.getSession().setAttribute("connected", "true");
             }
 
-//            Thread thread = Thread.startVirtualThread(new SessionDeleter(req.getSession(), "connected"));
-//            thread.start();
+
 
             req.getRequestDispatcher("/Profile.jsp").forward(req, resp);
         } else {
